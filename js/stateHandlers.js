@@ -11,11 +11,12 @@ var stateHandlers = {
          */
         'LaunchRequest' : function () {
             // Initialize Attributes
-            this.attributes['playOrder'] = Array.apply(null, {length: audioData.length}).map(Number.call, Number);
+            this.attributes['playOrder'] = [0];
             this.attributes['index'] = 0;
             this.attributes['offsetInMilliseconds'] = 0;
             this.attributes['loop'] = true;
             this.attributes['shuffle'] = false;
+            this.attributes['count'] = 2;
             this.attributes['playbackIndexChanged'] = true;
             //  Change state to START_MODE
             this.handler.state = constants.states.START_MODE;
@@ -29,10 +30,11 @@ var stateHandlers = {
         'PlayAudio' : function () {
             if (!this.attributes['playOrder']) {
                 // Initialize Attributes if undefined.
-                this.attributes['playOrder'] = Array.apply(null, {length: audioData.length}).map(Number.call, Number);
+                this.attributes['playOrder'] = [0];tnb
                 this.attributes['index'] = 0;
                 this.attributes['offsetInMilliseconds'] = 0;
                 this.attributes['loop'] = true;
+                this.attributes['count'] = 2;
                 this.attributes['shuffle'] = false;
                 this.attributes['playbackIndexChanged'] = true;
                 //  Change state to START_MODE
@@ -191,6 +193,7 @@ var controller = function () {
                 this.attributes['offsetInMilliseconds'] = 0;
                 this.attributes['playbackIndexChanged'] = true;
                 this.attributes['playbackFinished'] = false;
+                this.attributes['count'] = 2;
             }
 
             var token = String(this.attributes['playOrder'][this.attributes['index']]);
@@ -206,7 +209,7 @@ var controller = function () {
                 this.response.cardRenderer(cardTitle, cardContent, null);
             }
 
-            this.response.audioPlayerPlay(playBehavior, podcast.url, token, null, offsetInMilliseconds);
+            this.response.speak("one, two, three").audioPlayerPlay(playBehavior, podcast.url, token, null, offsetInMilliseconds);
             this.emit(':responseReady');
         },
         stop: function () {
@@ -214,7 +217,7 @@ var controller = function () {
              *  Issuing AudioPlayer.Stop directive to stop the audio.
              *  Attributes already stored when AudioPlayer.Stopped request received.
              */
-            this.response.audioPlayerStop();
+            this.response.speak("nicely done").audioPlayerStop();
             this.emit(':responseReady');
         },
         playNext: function () {
@@ -227,7 +230,7 @@ var controller = function () {
             index += 1;
             // Check for last audio file.
             if (index === audioData.length) {
-                if (this.attributes['loop']) {
+                if (this.attributes['loop'] && this.attributes['count'] > 0) {
                     index = 0;
                 } else {
                     // Reached at the end. Thus reset state to start mode and stop playing.
