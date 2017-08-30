@@ -30,7 +30,7 @@ var stateHandlers = {
         'PlayAudio' : function () {
             if (!this.attributes['playOrder']) {
                 // Initialize Attributes if undefined.
-                this.attributes['playOrder'] = [0];tnb
+                this.attributes['playOrder'] = [0];
                 this.attributes['index'] = 0;
                 this.attributes['offsetInMilliseconds'] = 0;
                 this.attributes['loop'] = true;
