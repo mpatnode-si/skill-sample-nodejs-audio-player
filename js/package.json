@@ -4,6 +4,8 @@
   "description": "An audio player sample skill.",
   "main": "index.js",
   "scripts": {
+    "deploy": "pushd src && zip -r /tmp/alexa-audio-skill.zip . -x config/local-template.js && aws lambda update-function-code --function-name AudioPlayerLamdaFunction --zip-file fileb:///tmp/alexa-audio-skill.zip && popd",
+
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
@@ -16,8 +18,8 @@
   "dependencies": {
     "alexa-sdk": "^1.0.4"
   },
-  "repository" : {
-    "type" : "git",
-    "url" : "https://github.com/alexa/skill-sample-nodejs-audio-player"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alexa/skill-sample-nodejs-audio-player"
   }
 }
