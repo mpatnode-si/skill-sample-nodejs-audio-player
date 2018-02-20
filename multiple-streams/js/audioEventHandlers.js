@@ -58,9 +58,10 @@ var audioEventHandlers = Alexa.CreateStateHandler(constants.states.PLAY_MODE, {
         enqueueIndex +=1;
         // Checking if  there are any items to be enqueued.
         if (enqueueIndex === audioData.length) {
-            if (this.attributes['loop']) {
+            if (this.attributes['loop'] && this.attributes['count'] > 0) {
                 // Enqueueing the first item since looping is enabled.
                 enqueueIndex = 0;
+                this.attributes['count']--;
             } else {
                 // Nothing to enqueue since reached end of the list and looping is disabled.
                 return this.context.succeed({});
